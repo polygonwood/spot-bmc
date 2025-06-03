@@ -1,0 +1,189 @@
+<template name="canvasEditor">
+  {{#if isLoading}}
+    <div class="text-center my-5">
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+  {{else}}
+    {{#with canvas}}
+      <div class="canvas-editor-container">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h1 class="canvas-title">{{title}}</h1>
+          <div class="d-flex gap-2">
+            <button id="rename-canvas" class="btn btn-outline-secondary">Rename</button>
+            <a href="/canvases" class="btn btn-outline-primary">Back to List</a>
+          </div>
+        </div>
+
+        <div class="business-model-canvas">
+          <!-- First row -->
+          <div class="bmc-row">
+            <div class="bmc-cell" id="key-partners">
+              <h3>Key Partners</h3>
+              <div class="bmc-content">
+                {{> canvasSectionItems section="keyPartnerships" items=keyPartnerships}}
+              </div>
+            </div>
+            
+            <div class="bmc-cell" id="key-activities">
+              <h3>Key Activities</h3>
+              <div class="bmc-content">
+                {{> canvasSectionItems section="keyActivities" items=keyActivities}}
+              </div>
+            </div>
+            
+            <div class="bmc-cell" id="value-propositions">
+              <h3>Value Propositions</h3>
+              <div class="bmc-content">
+                {{> canvasSectionItems section="valuePropositions" items=valuePropositions}}
+              </div>
+            </div>
+            
+            <div class="bmc-cell" id="customer-relationships">
+              <h3>Customer Relationships</h3>
+              <div class="bmc-content">
+                {{> canvasSectionItems section="customerRelationships" items=customerRelationships}}
+              </div>
+            </div>
+            
+            <div class="bmc-cell" id="customer-segments">
+              <h3>Customer Segments</h3>
+              <div class="bmc-content">
+                {{> canvasSectionItems section="customerSegments" items=customerSegments}}
+              </div>
+            </div>
+          </div>
+          
+          <!-- Second row -->
+          <div class="bmc-row">
+            <div class="bmc-cell" id="key-resources">
+              <h3>Key Resources</h3>
+              <div class="bmc-content">
+                {{> canvasSectionItems section="keyResources" items=keyResources}}
+              </div>
+            </div>
+            
+            <div class="bmc-cell" id="channels">
+              <h3>Channels</h3>
+              <div class="bmc-content">
+                {{> canvasSectionItems section="channels" items=channels}}
+              </div>
+            </div>
+          </div>
+          
+          <!-- Third row -->
+          <div class="bmc-row">
+            <div class="bmc-cell" id="cost-structure">
+              <h3>Cost Structure</h3>
+              <div class="bmc-content">
+                {{> canvasSectionItems section="costStructure" items=costStructure}}
+              </div>
+            </div>
+            
+            <div class="bmc-cell" id="revenue-streams">
+              <h3>Revenue Streams</h3>
+              <div class="bmc-content">
+                {{> canvasSectionItems section="revenueStreams" items=revenueStreams}}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    {{else}}
+      <div class="alert alert-danger" role="alert">
+        Canvas not found or has been deleted.
+        <a href="/canvases" class="alert-link">Go back to canvas list</a>
+      </div>
+    {{/with}}
+  {{/if}}
+  
+  <!-- Rename Canvas Modal -->
+  <div class="modal fade" id="renameCanvasModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Rename Canvas</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="rename-form">
+            <div class="mb-3">
+              <label for="canvas-title" class="form-label">Canvas Title</label>
+              <input type="text" class="form-control" id="canvas-title" required>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-primary" id="save-rename">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Add Item Modal -->
+  <div class="modal fade" id="addItemModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Add Item</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="add-item-form">
+            <input type="hidden" id="section-name">
+            <div class="mb-3">
+              <label for="item-text" class="form-label">Item Text</label>
+              <textarea class="form-control" id="item-text" rows="3" required></textarea>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-primary" id="save-item">Add</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Edit Item Modal -->
+  <div class="modal fade" id="editItemModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Edit Item</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="edit-item-form">
+            <input type="hidden" id="edit-section-name">
+            <input type="hidden" id="edit-item-index">
+            <div class="mb-3">
+              <label for="edit-item-text" class="form-label">Item Text</label>
+              <textarea class="form-control" id="edit-item-text" rows="3" required></textarea>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-danger me-auto" id="delete-item">Delete</button>
+          <button type="button" class="btn btn-primary" id="update-item">Save Changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<template name="canvasSectionItems">
+  <div class="section-items">
+    {{#each item in items}}
+      <div class="canvas-item" data-section="{{section}}" data-index="{{@index}}">
+        {{item}}
+      </div>
+    {{/each}}
+    <button class="btn btn-sm btn-light add-item" data-section="{{section}}">
+      <i class="fas fa-plus"></i> Add Item
+    </button>
+  </div>
+</template>

@@ -1,0 +1,136 @@
+/* Main Styles */
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+}
+
+.main-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+main {
+  flex: 1;
+}
+
+footer {
+  margin-top: auto;
+}
+
+/* Business Model Canvas Styles */
+.business-model-canvas {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #dee2e6;
+  border-radius: 0.25rem;
+  overflow: hidden;
+  margin-bottom: 2rem;
+  background-color: #f8f9fa;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.bmc-row {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.bmc-cell {
+  flex: 1;
+  min-width: 200px;
+  padding: 1rem;
+  border: 1px solid #dee2e6;
+  background-color: white;
+}
+
+.bmc-cell h3 {
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #eee;
+  color: #495057;
+}
+
+.bmc-content {
+  min-height: 150px;
+}
+
+/* First row has 5 columns */
+#key-partners, #key-activities, #value-propositions, 
+#customer-relationships, #customer-segments {
+  width: 20%;
+  flex-basis: 20%;
+}
+
+/* Second row has 2 columns (spanning multiple columns) */
+#key-resources {
+  width: 40%;
+  flex-basis: 40%;
+}
+
+#channels {
+  width: 60%;
+  flex-basis: 60%;
+}
+
+/* Third row has 2 columns */
+#cost-structure, #revenue-streams {
+  width: 50%;
+  flex-basis: 50%;
+}
+
+/* Canvas Items */
+.section-items {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.canvas-item {
+  background-color: #f0f7ff;
+  border: 1px solid #d0e3ff;
+  border-radius: 0.25rem;
+  padding: 0.75rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.canvas-item:hover {
+  background-color: #e0f0ff;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  transform: translateY(-1px);
+}
+
+.add-item {
+  margin-top: 0.5rem;
+  align-self: flex-start;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+  #key-partners, #key-activities, #value-propositions, 
+  #customer-relationships, #customer-segments {
+    width: 33.33%;
+    flex-basis: 33.33%;
+  }
+  
+  #key-resources, #channels {
+    width: 50%;
+    flex-basis: 50%;
+  }
+}
+
+@media (max-width: 768px) {
+  #key-partners, #key-activities, #value-propositions, 
+  #customer-relationships, #customer-segments,
+  #key-resources, #channels,
+  #cost-structure, #revenue-streams {
+    width: 100%;
+    flex-basis: 100%;
+  }
+}
